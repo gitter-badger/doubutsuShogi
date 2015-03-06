@@ -36,6 +36,7 @@ type alias GameState = {
 boardSize = {x = 3, y = 4}
 komaSize = {x = 100, y = 100}
 
+-- 初期配置
 initBoard : Board
 initBoard = [
     (OnBoard (0,0), Just (Elephant, P2), NoEffect)
@@ -54,7 +55,6 @@ initBoard = [
 
 clickMessage : Channel Pos
 clickMessage = channel <| OnBoard (0,0)
-
 
 
 show : (Pos, StateAt, Effect) -> Element
@@ -100,6 +100,7 @@ posKeyListTo2DList tuples =
       tpl2nd3rd (_,b,c) = (b,c)
   in L.map (\yi -> (yiList yi) tuples ) [0..yMax]
 
+-- (Pos,StateAt,Effect) の二次元リストをエレメントに変換する
 fromListListStateAtToElement : List (List (Pos, StateAt, Effect)) -> Element
 fromListListStateAtToElement = L.map (\cel -> flow right (L.map show cel)) >> flow down
 
@@ -153,24 +154,21 @@ gameState : Signal GameState
 gameState = foldp updateGameState initGameState (subscribe clickMessage)
 
 main =
-  let
-      a : Board -> Element
-      a b = b |> posKeyListTo2DList |> fromListListStateAtToElement
+  let boardToElement : Board -> Element
+      boardToElement b = b |> posKeyListTo2DList |> fromListListStateAtToElement
       toClickable : Pos -> Element -> Element
       toClickable pos = clickable (send clickMessage pos)
+      showKomaDai : Player -> KomaDai -> Element
+      showKomaDai pl mochiG = mochiG |> A.toIndexedList |> L.map (\(i, kt) -> toClickable (InHand pl i) (showKoma kt pl)) |> flow right
       komaDai : KomaDai -> KomaDai -> Element
-      komaDai mochiG1 mochiG2 =
-          flow down [
-                    mochiG2 |> A.toIndexedList |> L.map (\(i, kt) -> toClickable (InHand P2 i) (showKoma kt P2)) |> flow right
-                  , mochiG1 |> A.toIndexedList |> L.map (\(i, kt) -> toClickable (InHand P1 i) (showKoma kt P1)) |> flow right
-                 ]
+      komaDai mochiG1 mochiG2 = flow down [ showKomaDai P2 mochiG2 , showKomaDai P1 mochiG1 ]
       view : GameState -> Element
       view gs = flow right [
                  flow down [
                    case gs.result of
                      Win p -> flow right [T.asText p,  T.plainText "の勝ちです"]
                      otherwise -> flow right [T.asText gs.turn, T.plainText "の手番です"]
-                 , a gs.board |> color green
+                 , boardToElement gs.board |> color green
                  , T.asText gs
                       ] |> width (boardSize.x * komaSize.x)
                 , komaDai gs.mochiGoma1 gs.mochiGoma2
@@ -184,24 +182,24 @@ isOnBoard b (x,y) = (0 <= x) && (x <= boardSize.x - 1) && (0 <= y) && (y <= boar
 
 -- 指定した駒の動けるマスのPosのリストを返す
 movablePos : Board -> (Pos, StateAt) -> List Pos
-movablePos b (p,s) = case p of
-                       OnBoard p' -> movablePosOnBoard b (p', s)
-                       InHand _ n -> movablePosInHand b
+movablePos b (p,s) =
+    let movablePosInHand : Board -> List Pos
+        movablePosInHand b = emptyPoss b
 
-movablePosInHand : Board -> List Pos
-movablePosInHand b = emptyPoss b
-
-movablePosOnBoard : Board -> ((Int,Int), StateAt) -> List Pos
-movablePosOnBoard b ((x,y), s) =
-  let filterFunc : Player -> (Int,Int) -> Bool
-      filterFunc pl xy = (isOnBoard b xy) && not (L.member (OnBoard xy) (possesOf pl b))
-  in case s of
-       Nothing -> []
-       Just (kt, pl) -> case (kt, pl) of
-         (Lion, p) -> [(x-1,y),(x,y-1),(x+1,y),(x,y+1),(x+1,y+1),(x+1,y-1),(x-1,y+1),(x-1,y-1)] |> L.filter (filterFunc p) |> L.map OnBoard
-         (Elephant, p) -> [(x+1,y+1),(x-1,y+1),(x-1,y-1),(x+1,y-1)] |> L.filter (filterFunc p) |> L.map OnBoard
-         (Giraffe, p) -> [(x,y+1),(x,y-1),(x+1,y),(x-1,y)] |> L.filter (filterFunc p) |> L.map OnBoard
-         (Chick, p) -> [(x,if p == P1 then y-1 else y+1)] |> L.filter (filterFunc p) |> L.map OnBoard
+        movablePosOnBoard : Board -> ((Int,Int), StateAt) -> List Pos
+        movablePosOnBoard b ((x,y), s) =
+          let filterFunc : Player -> (Int,Int) -> Bool
+              filterFunc pl xy = (isOnBoard b xy) && not (L.member (OnBoard xy) (possesOf pl b))
+          in case s of
+               Nothing -> []
+               Just (kt, pl) -> case (kt, pl) of
+                 (Lion, p) -> [(x-1,y),(x,y-1),(x+1,y),(x,y+1),(x+1,y+1),(x+1,y-1),(x-1,y+1),(x-1,y-1)] |> L.filter (filterFunc p) |> L.map OnBoard
+                 (Elephant, p) -> [(x+1,y+1),(x-1,y+1),(x-1,y-1),(x+1,y-1)] |> L.filter (filterFunc p) |> L.map OnBoard
+                 (Giraffe, p) -> [(x,y+1),(x,y-1),(x+1,y),(x-1,y)] |> L.filter (filterFunc p) |> L.map OnBoard
+                 (Chick, p) -> [(x,if p == P1 then y-1 else y+1)] |> L.filter (filterFunc p) |> L.map OnBoard
+    in case p of
+         OnBoard p' -> movablePosOnBoard b (p', s)
+         InHand _ n -> movablePosInHand b
 
 -- 指定したプレイヤーの駒が占めているボード上のPosのリストを返す
 possesOf : Player -> Board -> List Pos
