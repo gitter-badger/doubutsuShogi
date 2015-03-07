@@ -2962,7 +2962,7 @@ Elm.Main.make = function (_elm) {
             case "Nothing":
             return $Debug.crash(errStr);}
          _U.badCase($moduleName,
-         "between lines 316 and 318");
+         "between lines 319 and 321");
       }();
    });
    var emptyPoss = function ($) {
@@ -3501,7 +3501,7 @@ Elm.Main.make = function (_elm) {
                                  ,_2: _v83._1._1};}
                        break;}
                   _U.badCase($moduleName,
-                  "on line 311, column 62 to 75");
+                  "on line 314, column 62 to 75");
                }();
             })($Dict.toList(d));
          };
@@ -3510,7 +3510,7 @@ Elm.Main.make = function (_elm) {
                switch (p.ctor)
                {case "OnBoard": return p._0;}
                _U.badCase($moduleName,
-               "between lines 300 and 302");
+               "between lines 303 and 305");
             }();
          };
          var onBoardFilter = $List.filter(function (_v91) {
@@ -3522,10 +3522,10 @@ Elm.Main.make = function (_elm) {
                        {case "InHand": return false;
                           case "OnBoard": return true;}
                        _U.badCase($moduleName,
-                       "between lines 296 and 298");
+                       "between lines 299 and 301");
                     }();}
                _U.badCase($moduleName,
-               "between lines 296 and 298");
+               "between lines 299 and 301");
             }();
          });
          var boardToDict = function (b) {
@@ -3539,7 +3539,7 @@ Elm.Main.make = function (_elm) {
                                  ,_0: _v100._1
                                  ,_1: _v100._2}};}
                   _U.badCase($moduleName,
-                  "on line 308, column 62 to 74");
+                  "on line 311, column 62 to 74");
                }();
             })(onBoardFilter(b)));
          };
@@ -3563,7 +3563,7 @@ Elm.Main.make = function (_elm) {
                        return b;
                     }();}
                _U.badCase($moduleName,
-               "between lines 303 and 307");
+               "between lines 306 and 310");
             }();
          });
          return A3($List.foldl,
@@ -3578,7 +3578,7 @@ Elm.Main.make = function (_elm) {
                     ,_1: _v114._1
                     ,_2: _v114._2});}
                _U.badCase($moduleName,
-               "on line 313, column 30 to 52");
+               "on line 316, column 30 to 52");
             }();
          }),
          b,
@@ -3597,7 +3597,7 @@ Elm.Main.make = function (_elm) {
                          ,_1: _v119._1
                          ,_2: NoEffect};}
                _U.badCase($moduleName,
-               "on line 257, column 44 to 57");
+               "on line 259, column 44 to 57");
             }();
          });
          var resetEffect = $List.map(function (_v124) {
@@ -3609,7 +3609,7 @@ Elm.Main.make = function (_elm) {
                          ,_1: _v124._1
                          ,_2: NoEffect};}
                _U.badCase($moduleName,
-               "on line 254, column 43 to 55");
+               "on line 256, column 43 to 55");
             }();
          });
          var selected = F2(function (p$,
@@ -3624,13 +3624,13 @@ Elm.Main.make = function (_elm) {
                   switch (_.ctor)
                   {case "_Tuple3": return _._0;}
                   _U.badCase($moduleName,
-                  "on line 243, column 30 to 75");
+                  "on line 245, column 30 to 75");
                }();
                var st = function () {
                   switch (_.ctor)
                   {case "_Tuple3": return _._1;}
                   _U.badCase($moduleName,
-                  "on line 243, column 30 to 75");
+                  "on line 245, column 30 to 75");
                }();
                var player = $Basics.snd(A2(justOrCrash,
                "yyy",
@@ -3666,13 +3666,15 @@ Elm.Main.make = function (_elm) {
                                                            ,_1: _v137._1
                                                            ,_2: _v137._2};}
                      _U.badCase($moduleName,
-                     "on line 250, column 43 to 119");
+                     "on line 252, column 43 to 119");
                   }();
                },
                gs.board) : gs.board;
             }();
          });
          var opponent_ = opponent(gs.turn);
+         var isFinished = !_U.eq(gs.result,
+         Unfinished);
          var isMove = _U.eq(gs.playState,
          Selected) && A2($List.member,
          pos,
@@ -3754,7 +3756,7 @@ Elm.Main.make = function (_elm) {
                        }();
                     }();}
                _U.badCase($moduleName,
-               "between lines 232 and 241");
+               "between lines 234 and 243");
             }();
          });
          var stAt = function (_v157) {
@@ -3775,58 +3777,59 @@ Elm.Main.make = function (_elm) {
          {ctor: "_Tuple2"
          ,_0: pos
          ,_1: stAt});
-         return isMove ? _U.replace([["playState"
-                                     ,Neutral]
-                                    ,["result"
-                                     ,_U.eq(A4(getStateAt,
-                                     gs.board,
-                                     gs.mochiGoma1,
-                                     gs.mochiGoma2,
-                                     pos),
-                                     $Maybe.Just({ctor: "_Tuple2"
-                                                 ,_0: Lion
-                                                 ,_1: opponent_})) ? Win(gs.turn) : Unfinished]
-                                    ,["board"
-                                     ,resetEffect(A2(updateBoard,
-                                     gs.board,
-                                     _L.fromArray([{ctor: "_Tuple3"
-                                                   ,_0: A2(justOrCrash,
-                                                   "xxx",
-                                                   gs.clickedPosition)
-                                                   ,_1: $Maybe.Nothing
-                                                   ,_2: NoEffect}
-                                                  ,function (cel) {
-                                                     return function () {
-                                                        var _v162 = gs.clickedPosition;
-                                                        switch (_v162.ctor)
-                                                        {case "Just":
-                                                           switch (_v162._0.ctor)
-                                                             {case "OnBoard":
-                                                                return nari(cel);}
-                                                             break;}
-                                                        return cel;
-                                                     }();
-                                                  }({ctor: "_Tuple3"
-                                                    ,_0: pos
-                                                    ,_1: gs.clickedStateAt
-                                                    ,_2: NoEffect})])))]
-                                    ,["turn",opponent(gs.turn)]
-                                    ,["clickedPosition"
-                                     ,$Maybe.Just(pos)]
-                                    ,["movablePositions"
-                                     ,_L.fromArray([])]
-                                    ,["mochiGoma1"
-                                     ,_U.eq(gs.turn,
-                                     P1) ? A3(mochiGoma_,
-                                     P1,
-                                     gs.clickedStateAt,
-                                     gs.clickedPosition) : gs.mochiGoma1]
-                                    ,["mochiGoma2"
-                                     ,_U.eq(gs.turn,
-                                     P2) ? A3(mochiGoma_,
-                                     P2,
-                                     gs.clickedStateAt,
-                                     gs.clickedPosition) : gs.mochiGoma2]],
+         return isFinished ? gs : isMove ? _U.replace([["playState"
+                                                       ,Neutral]
+                                                      ,["result"
+                                                       ,_U.eq(A4(getStateAt,
+                                                       gs.board,
+                                                       gs.mochiGoma1,
+                                                       gs.mochiGoma2,
+                                                       pos),
+                                                       $Maybe.Just({ctor: "_Tuple2"
+                                                                   ,_0: Lion
+                                                                   ,_1: opponent_})) ? Win(gs.turn) : Unfinished]
+                                                      ,["board"
+                                                       ,resetEffect(A2(updateBoard,
+                                                       gs.board,
+                                                       _L.fromArray([{ctor: "_Tuple3"
+                                                                     ,_0: A2(justOrCrash,
+                                                                     "xxx",
+                                                                     gs.clickedPosition)
+                                                                     ,_1: $Maybe.Nothing
+                                                                     ,_2: NoEffect}
+                                                                    ,function (cel) {
+                                                                       return function () {
+                                                                          var _v162 = gs.clickedPosition;
+                                                                          switch (_v162.ctor)
+                                                                          {case "Just":
+                                                                             switch (_v162._0.ctor)
+                                                                               {case "OnBoard":
+                                                                                  return nari(cel);}
+                                                                               break;}
+                                                                          return cel;
+                                                                       }();
+                                                                    }({ctor: "_Tuple3"
+                                                                      ,_0: pos
+                                                                      ,_1: gs.clickedStateAt
+                                                                      ,_2: NoEffect})])))]
+                                                      ,["turn"
+                                                       ,opponent(gs.turn)]
+                                                      ,["clickedPosition"
+                                                       ,$Maybe.Just(pos)]
+                                                      ,["movablePositions"
+                                                       ,_L.fromArray([])]
+                                                      ,["mochiGoma1"
+                                                       ,_U.eq(gs.turn,
+                                                       P1) ? A3(mochiGoma_,
+                                                       P1,
+                                                       gs.clickedStateAt,
+                                                       gs.clickedPosition) : gs.mochiGoma1]
+                                                      ,["mochiGoma2"
+                                                       ,_U.eq(gs.turn,
+                                                       P2) ? A3(mochiGoma_,
+                                                       P2,
+                                                       gs.clickedStateAt,
+                                                       gs.clickedPosition) : gs.mochiGoma2]],
          gs) : isSelect ? _U.replace([["board"
                                       ,A2(selected,pos,gs)]
                                      ,["playState",Selected]
@@ -4018,8 +4021,7 @@ Elm.Main.make = function (_elm) {
          _L.fromArray([$Graphics$Element.width(boardSize.x * komaSize.x)(A2($Graphics$Element.flow,
                       $Graphics$Element.down,
                       _L.fromArray([turnMessage(gs)
-                                   ,boardToElement(gs.board)
-                                   ,$Text.asText(gs)])))
+                                   ,boardToElement(gs.board)])))
                       ,A2($Graphics$Element.flow,
                       $Graphics$Element.down,
                       _L.fromArray([A2(komaDaiToElement,
